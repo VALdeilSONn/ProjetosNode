@@ -1,0 +1,542 @@
+https://expressjs.com/en/starter/hello-world.html
+
+https://expressjs.com/en/starter/installing.html
+
+
+const express = require('express')
+const app = express()
+const port = 3000
+
+app.get('/usuario', (req, res) => {
+  res.send('Rota ativada com GET e recurso usuário:nome, email e senha devem ser retornados')
+})
+
+app.get('/tarefas', (req, res) => {
+    res.send('Rota ativada com GET e recurso tarefas: título, data, status e descrição devem ser retornados')
+  })
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+
+
+
+const express = require('express')  // importa o express
+const app = express() // app recebe tudo da função express
+const port = 3000  // Definindo a porta do servidor que receberá as requisições
+
+
+// Definindo a Rota '/' para mostrar a mensagem hellow world
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+
+// O servidor está escutando na porta 3000. Subiu o servidor
+app.listen(port, () => {
+})  console.log(`Example app listening on port ${port}`)
+
+
+
+
+{
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.2.0"
+  }
+}
+
+
+console.log('\x1b[31m','Que tal mudar um pouco as cores?');
+console.log('\x1b[33m','SENAC, Resilia Educação, Prefeitura do Rio');
+// Combinando cores no fundo também
+console.log('\x1b[47m\x1b[30m','Será que é o jeito mais fácil? ');
+
+
+
+
+let vermelho = '\x1b[31m'
+let amarelo = '\x1b[33m'
+let realceClaro = '\x1b[47m\x1b[30m'
+
+
+console.log(vermelho,'Que tal mudar um pouco as cores?');
+console.log(amarelo,'Resilia Educação');
+// Combinando cores no fundo também
+console.log(realceClaro,'Será que é o jeito mais fácil? ');
+
+
+
+
+
+
+https://nodejs.org/en/docs/guides/getting-started-guide/
+
+
+
+
+
+
+CREATE SCHEMA aula09;
+
+
+CREATE TABLE cliente (
+	idCliente INT AUTO_INCREMENT PRIMARY KEY,
+	nomeCliente VARCHAR(255),
+    	cpf VARCHAR(255)
+);
+
+
+CREATE TABLE vendas (
+	idVenda INT AUTO_INCREMENT PRIMARY KEY,
+    	valor DECIMAL(7,2) ,
+    	idClienteFK INT
+);
+
+
+
+
+ALTER TABLE vendas ADD CONSTRAINT fkVendaCliente FOREIGN KEY (idClienteFK) REFERENCES cliente (idCliente);
+
+
+
+INSERT INTO cliente (`nomeCliente`, `cpf`)
+	values 
+		('Chico','3190567043'),
+		('Maurício','12777149089'),
+         	('Eliza','19176952096');
+
+INSERT INTO vendas (`idClienteFK`, `valor`)
+	values 
+		('1', 50.92),
+		('1', 13.29),
+     		('3', 22.25);
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+INNER JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK;
+
+
+
+
+
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+LEFT JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK;
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+LEFT JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK;
+
+
+
+
+
+
+LEFT JOIN  (O QUE ESTÁ SOMENTE EM "A" e NÃO ESTÁ EM B)
+
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+LEFT JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK
+    	WHERE vendas.valor IS NULL
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------
+
+*** FULL OUTER JOIN NÃO É SUPORTADO PELO MYSQL
+
+LEFT JOIN e RIGHT JOIN  (O QUE ESTÁ EM "A", TAMBÉM EM "B" e na INTERSEÇÃO "A" COM "B"  (OU SEJA, TODOS OS REGISTROS)
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+LEFT JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK
+UNION
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+RIGHT JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK;
+
+
+
+
+
+
+-------------------------------------------------------------
+
+
+RIGHT JOIN (O QUE ESTÁ SOMENTE EM "B" e também O QUE ESTÁ na INSTERSEÇÃO de "A" e "B" respectivamente)
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+RIGHT JOIN
+	vendas ON idCliente = vendas.idClienteFK;
+
+
+
+
+
+------------------------------------------------------------
+
+LEFT JOIN  (O QUE ESTÁ SOMENTE EM "B" e NÃO ESTÁ EM A, TAMBÉM NÃO ESTÁ NA INTERSEÇÃO)
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+RIGHT JOIN
+	vendas ON idCliente = vendas.idClienteFK
+    	WHERE valor IS NULL
+
+
+
+
+------------------------------------------------------------
+LEFT OUTER JOIN e RIGHT OUTER JOIN (ESTÁ EM "A", EM "B" e NÃO ESTÁ NA INTERSEÇÃO)
+
+
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+LEFT OUTER JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK
+	WHERE VALOR IS NULL
+UNION
+SELECT idCliente, nomeCliente, valor
+FROM cliente
+RIGHT OUTER JOIN
+	vendas ON cliente.idCliente = vendas.idClienteFK
+	WHERE VALOR IS NULL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EXERCÍCIOS
+
+
+SESSÃO 1
+
+-- Nome e email dos clientes com o valor que gastaram em aluguéis?
+SELECT c.first_name, c.email, sum(p.amount) FROM customer c
+INNER JOIN payment p ON p.customer_id = c.customer_id
+GROUP BY c.customer_id
+
+-- No relatório de faturamento geral, qual o nome de cada um dos funcionários?
+SELECT SUM(p.amount), s.first_name FROM staff s
+INNER JOIN payment p ON p.staff_id = s.staff_id
+GROUP BY s.staff_id
+
+-- Os nomes dos atores e os filmes que participaram?
+SELECT a.first_name, f.title FROM actor a
+INNER JOIN film_actor fa ON fa.actor_id = a.actor_id
+INNER JOIN film f ON f.film_id = fa.film_id
+
+-- Nomes dos clientes e funcionários envolvidos em cada aluguel?
+SELECT p.payment_id, s.first_name as 'Funcionário', c.first_name as 'Cliente'
+FROM payment p
+INNER JOIN customer c ON c.customer_id = p.customer_id
+INNER JOIN staff s ON s.staff_id = p.staff_id 
+
+
+
+
+
+
+
+
+
+
+
+SESSÃO 2
+
+
+--------------------------------------------
+Questão 1 
+
+******(Usando HAVING)
+
+-- Quais atores atuaram em mais de 15 filmes?
+
+SELECT a.first_name, a.last_name, count(fa.film_id) as total_filmes FROM actor a
+INNER JOIN film_actor fa ON fa.actor_id = a.actor_id
+GROUP BY a.actor_id
+HAVING total_filmes > 15
+
+
+
+*******(Usando SUBQUERY)
+SELECT
+	x.first_name, 
+    	x.last_name,
+    	x.total_filmes
+FROM (
+	SELECT  
+		first_name, 
+		last_name, 
+		count(fa.film_id) as total_filmes 
+	FROM actor a
+	INNER JOIN film_actor fa ON fa.actor_id = a.actor_id
+	GROUP BY a.actor_id
+) AS x
+WHERE x.total_filmes > 15;
+
+
+
+
+
+
+
+
+----------------------------------------------
+Questão 2
+
+******(Usando HAVING)
+
+-- Quais clientes fizeram 29 pedidos?
+
+SELECT c.first_name, c.last_name, count(p.payment_id) as total_pedidos FROM customer c
+INNER JOIN payment p ON p.customer_id = c.customer_id
+GROUP BY c.customer_id
+HAVING total_pedidos = 29
+
+
+
+*******(Usando SUBQUERY)
+
+SELECT
+	x.first_name, 
+	x.last_name, 
+	x.total_pedidos
+FROM (
+	SELECT c.first_name, c.last_name, count(p.payment_id) as total_pedidos 
+	FROM customer c
+	INNER JOIN payment p ON p.customer_id = c.customer_id
+	GROUP BY c.customer_id
+) AS x
+WHERE x.total_pedidos > 29;
+
+
+
+
+XMLHttpRequest
+
+
+// Requisição para o randomuser.me utilizando o XMLHttpRequest e exibindo os dados na tela
+
+// Cria o objeto XMLHttpRequest
+var xhr = new XMLHttpRequest();
+
+
+
+// Abre a conexão com o servidor
+xhr.open('GET', 'https://randomuser.me/api/');
+
+
+
+// Envia a requisição
+xhr.send(null);
+
+
+
+// Verifica se a requisição foi concluída
+xhr.onreadystatechange = function() {
+    
+	if (xhr.readyState === 4) {
+
+        // Converte a resposta para JSON
+        var response = JSON.parse(xhr.responseText);
+
+        // Exibe os dados na tela
+        console.log(response);
+    }
+}
+
+
+
+EXEMPLO
+
+
+
+XMLHttpRequest
+
+
+// Requisição para o randomuser.me utilizando o XMLHttpRequest e exibindo os dados na tela
+
+// Cria o objeto XMLHttpRequest
+var xhr = new XMLHttpRequest();
+
+
+
+// Abre a conexão com o servidor
+xhr.open('GET', 'https://randomuser.me/api/');
+
+
+
+// Envia a requisição
+xhr.send(null);
+
+
+
+// Verifica se a requisição foi concluída
+xhr.onreadystatechange = function() {
+    
+	if (xhr.readyState === 4) {
+
+        // Converte a resposta para JSON
+        var response = JSON.parse(xhr.responseText);
+
+        // Exibe os dados na tela
+        console.log(response);
+    }
+}
+
+
+
+
+
+
+
+
+	
+https://jsonplaceholder.typicode.com/posts/1
+
+
+let XMLHttpRequest = require('xhr2')
+
+
+
+
+	
+
+
+
+fetch("https://randomuser.me/api/") // o get é o padrão
+
+
+  .then((response) => response.json()) // Pegar a promisse - pode ser sync await
+  .then((data) => console.log(data)) // pega os dados
+
+
+  .catch((error) => {
+    // caso queiramos pegar o error. Alguma coisa deu errado
+    console.log(error);
+  });
+
+
+
+
+
+const express = require('express') // CommonJS
+const app = express()
+const port = 3000
+
+
+// Importação da constante
+const saud = require('./MODULOS/constante')
+console.log(saud)
+
+// Importação de um Objeto
+const obj = require('./MODULOS/objeto')
+console.log(obj)
+
+
+
+// Import de uma função
+const funcao = require('./MODULOS/funcao')
+funcao()
+
+
+// Import desconstruindo um objeto
+const { msg1, msg2 } = require('./MODULOS/desconstruindoObj')
+console.log(msg1, msg2)
+
+
+
+
+app.listen(port, () => {
+    console.log("Servidor rodando na porta ", port)
+})
+
+
+// Exporta a constante para ser importado no Index. 
+const saudacao = 'Olá Mundo'
+
+module.exports = saudacao
+
+
+
+
+// Exporta uma função  para ser importado no Index. 
+
+function funcao() {
+    console.log('Eu sou uma função')
+}
+
+module.exports = funcao
+
+
+
+// Exporta o objeto para ser importado no Index. 
+const objeto = {
+    nome: "João",
+    idade: 23
+}
+
+module.exports = objeto
+
+
+
+// Exporta o objeto para ser importado no Index de forma desconstruida 
+
+const objeto2 = {
+    msg1: "Primeira mensagem - ",
+    msg2: "Minha segunda mesnagem"
+}
+
+module.exports = objeto2
+
+
+
+
+https://www.npmjs.com/package/nodemon#user-content-application-isnt-restarting
+
+
+
+
+
+
+
+
+
