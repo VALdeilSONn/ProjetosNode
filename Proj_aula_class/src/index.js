@@ -7,10 +7,11 @@ const locallhost = 'http://127.0.0.1'
 
 app.use(express.json())
 
-
-const { usuarioGet, usuarioPost } = require('./controller/usuario-controller')
-usuarioGet(app)
-usuarioPost(app)
+const UsuarioControlles = require('./controller/usuari-controller-class')
+UsuarioControlles.rotas(app)
+// const { usuarioGet, usuarioPost } = require('./controller/usuario-controller')
+// usuarioGet(app)
+// usuarioPost(app)
 
 const { tarefaGet, tarefaPost } = require('./controller/tarefa-controller')
 tarefaGet(app)
